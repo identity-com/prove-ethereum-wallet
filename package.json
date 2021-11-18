@@ -1,11 +1,18 @@
 {
-  "name": "prove-ethereum-wallet",
+  "name": "@identity.com/prove-ethereum-wallet",
   "version": "1.0.0",
   "description": "Library for providing a standard proof creation and verification for ethereum wallets",
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=12"
+  },
   "author": "Kevin Colgan",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "build": "tsc",
     "lint": "eslint src/**/*.ts --max-warnings 0",
