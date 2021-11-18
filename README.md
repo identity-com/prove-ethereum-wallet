@@ -1,6 +1,6 @@
 # Prove-Ethereum-Wallet
 
-This library proves ownership of an Ethereum wallet to off-chain verifiers. To create proof of ownership, a signing function must be provided that allows the user to sign some typed-data with their private key, thus proving they own the wallet. The verifier will check that the signature of the signer matches the wallet address to check, and that the contents of the signed typed-message are valid.
+This library proves ownership of an Ethereum wallet to off-chain verifiers. To create proof of ownership, a signing function must be provided that allows the user to sign some typed-data with their private key, thus proving they own the wallet. The verifier will check that the signature of the signer matches the wallet address to check, and that the contents of the signed typed-message are valid. The proof consists of a string of a base64 version of the message concatenated with a '.' and the base64 version of the signature. 
 
 ## Install
 
