@@ -1,6 +1,6 @@
 {
   "name": "@identity.com/prove-ethereum-wallet",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Library for providing a standard proof creation and verification for ethereum wallets",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -14,9 +14,11 @@
   "author": "Kevin Colgan",
   "license": "MIT",
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint src/**/*.ts --max-warnings 0",
-    "preinstall": "rm -rf node_modules",
+    "start": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
     "script": "ts-node -O '{\"module\":\"commonjs\"}' --transpile-only --files"
   },
   "dependencies": {
@@ -25,6 +27,7 @@
     "es6-promisify": "^7.0.0",
     "ethers": "^5.5.1",
     "rambda": "^6.9.0",
+    "tsdx": "^0.14.1",
     "tslib": "^2.3.1",
     "web3": "^1.6.1",
     "yargs": "^17.2.1"
