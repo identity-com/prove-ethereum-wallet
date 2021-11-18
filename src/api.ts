@@ -2,7 +2,7 @@ import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer'
 import { verifyTypedData } from 'ethers/lib/utils';
 import { CreatePowoOptions, defaultDomain, defaultTypes, EthPowoMessage, VerifyPowoOptions } from './types';
 
-export const createPowo = async (
+export const create = async (
   signTypedData: (
     domain: TypedDataDomain,
     types: Record<string, TypedDataField[]>,
@@ -25,7 +25,7 @@ export const createPowo = async (
   return `${messageB64}.${signatureB64}`;
 };
 
-export const verifyPowo = async (
+export const verify = async (
   address: string,
   proof: string,
   { domain = defaultDomain, types = defaultTypes, verifierAddress }: VerifyPowoOptions

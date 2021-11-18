@@ -1,5 +1,5 @@
 import yargs from 'yargs';
-import { verifyPowo } from '../../src/index';
+import { verify } from '../../src/index';
 
 /**
  * Usage: 
@@ -19,7 +19,7 @@ import { verifyPowo } from '../../src/index';
 
   const { proof, address } = args;
   console.log('Attempting to verify ethereum proof', proof);
-  const result = await verifyPowo(address as string, proof as string, {
+  const result = await verify(address as string, proof as string, {
     verifierAddress: 'https://passv2-dev.civic.com',
   });
   console.log(`Verify result: ${result}`);

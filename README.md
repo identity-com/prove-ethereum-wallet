@@ -20,16 +20,16 @@ Prove ownership of an Ethereum wallet
 
 Prover side: 
 ```js
-const { createPowo } = require('@identity.com/prove-ethereum-wallet');
+const { create } = require('@identity.com/prove-ethereum-wallet');
 const ownerWallet = Wallet.createRandom();
 
-const proof = await createPowo((domain, types, message) => wallet._signTypedData(domain, types, message), { verifierAddress: '<verifierUrl>' });
+const proof = await create((domain, types, message) => wallet._signTypedData(domain, types, message), { verifierAddress: '<verifierUrl>' });
 ```
 
 Verifier side:
 ```js
-const { verifyPowo } = require('@identity.com/prove-ethereum-wallet');
-const success = await verifyPowo(expectedOwnerAddress, proof, { verifierAddress: '<verifierUrl>' });
+const { verify } = require('@identity.com/prove-ethereum-wallet');
+const success = await verify(expectedOwnerAddress, proof, { verifierAddress: '<verifierUrl>' });
 ```
 
 ## Details
