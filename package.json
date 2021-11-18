@@ -1,7 +1,7 @@
 {
-  "name": "eth-signing",
-  "version": "1.0.4",
-  "description": "Local lib for sharing eth sigining functionality in the ociv monorepo",
+  "name": "prove-ethereum-wallet",
+  "version": "1.0.0",
+  "description": "Library for providing a standard proof creation and verification for ethereum wallets",
   "main": "dist/index.js",
   "author": "Kevin Colgan",
   "license": "MIT",
