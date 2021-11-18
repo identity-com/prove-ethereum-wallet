@@ -1,4 +1,4 @@
-import { createPowo } from '../../src/index';
+import { create } from '../../src/index';
 import { Wallet } from 'ethers';
 
 /**
@@ -10,6 +10,6 @@ import { Wallet } from 'ethers';
 
   const signFn = (_domain, _types, _message) => wallet._signTypedData(_domain, _types, _message);
 
-  const proof = await createPowo(signFn, { verifierAddress: 'test' });
+  const proof = await create(signFn, { verifierAddress: 'test' });
   console.log({ address: wallet.address, proof });
 })();
