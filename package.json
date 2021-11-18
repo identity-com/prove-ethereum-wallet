@@ -1,6 +1,6 @@
 {
   "name": "@identity.com/prove-ethereum-wallet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Library for providing a standard proof creation and verification for ethereum wallets",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -33,14 +33,14 @@
     "@types/bignumber.js": "^5.0.0",
     "@types/es6-promisify": "^6.0.0",
     "@types/yargs": "^17.0.5",
-    "@web3-react/core": "^6.1.9",
-    "ts-node": "^10.4.0",
-    "typescript": "^4.4.4",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
+    "@web3-react/core": "^6.1.9",
     "eslint": "^7.29.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2"
+    "prettier": "^2.3.2",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
   }
 }
