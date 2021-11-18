@@ -11,7 +11,7 @@ import { Wallet } from 'ethers';
   const signFn = (_domain, _types, _message) => wallet._signTypedData(_domain, _types, _message);
 
   const proof = await create(signFn, { verifierAddress: 'test' });
-  console.log({ address: wallet.address, proof });
+  console.log(JSON.stringify({ address: wallet.address, proof }, null, 2));
 
   const result = await verify(wallet.address, proof, {
     verifierAddress: 'test',

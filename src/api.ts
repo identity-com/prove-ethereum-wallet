@@ -38,11 +38,11 @@ export const verify = async (
   console.log('verifyPowo decoded', { decodedSignature, decodedMessage });
   const recoveredAddress = verifyTypedData(domain, types, decodedMessage, decodedSignature);
   if (recoveredAddress !== address) {
-    throw new Error('Message was signed by unexpected wallet.');
+    throw new Error('Message was signed by unexpected wallet');
   }
 
   if (new Date(decodedMessage.expires).getTime() < Date.now()) {
-    throw new Error('Token Expired.');
+    throw new Error('Token Expired');
   }
 
   if (decodedMessage.verifierAddress && verifierAddress && decodedMessage.verifierAddress !== verifierAddress) {
