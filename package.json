@@ -36,8 +36,7 @@
   ],
   "dependencies": {
     "@ethersproject/abstract-signer": "^5.5.0",
-    "ethers": "^5.5.1",
-    "web3": "^1.6.1"
+    "ethers": "^5.5.1"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.0",
