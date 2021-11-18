@@ -27,11 +27,11 @@
   "size-limit": [
     {
       "path": "dist/prove-ethereum-wallet.cjs.production.min.js",
-      "limit": "200 KB"
+      "limit": "110 KB"
     },
     {
       "path": "dist/prove-ethereum-wallet.esm.js",
-      "limit": "200 KB"
+      "limit": "10 KB"
     }
   ],
   "dependencies": {
@@ -40,6 +40,8 @@
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.0",
+    "@size-limit/webpack": "^7.0.0",
+    "@size-limit/webpack-why": "^7.0.0",
     "@types/yargs": "^17.0.5",
     "@typescript-eslint/eslint-plugin": "^4.28.1",
     "@typescript-eslint/parser": "^4.28.1",
