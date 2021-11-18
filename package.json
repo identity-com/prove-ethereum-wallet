@@ -1,6 +1,6 @@
 {
   "name": "@identity.com/prove-ethereum-wallet",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "Library for providing a standard proof creation and verification for ethereum wallets",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
