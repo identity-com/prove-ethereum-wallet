@@ -4,7 +4,8 @@ export type Address = string;
 
 export type EthPowoMessage = {
   expires: string;
-  message: string;
+  message?: string;
+  verifierAddress?: string;
 };
 
 export const defaultDomain: TypedDataDomain = {
@@ -22,10 +23,12 @@ export const defaultTypes: Record<string, Array<TypedDataField>> = {
 export type CreatePowoOptions = {
   domain?: TypedDataDomain;
   types?: Record<string, TypedDataField[]>;
-  message: string;
+  message?: string;
+  verifierAddress?: string;
 };
 export type VerifyPowoOptions = {
   domain?: TypedDataDomain;
   types?: Record<string, TypedDataField[]>;
-  message: string;
+  message?: string;
+  verifierAddress?: string;
 };

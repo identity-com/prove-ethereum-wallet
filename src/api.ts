@@ -8,13 +8,14 @@ export const create = async (
     types: Record<string, TypedDataField[]>,
     value: EthPowoMessage
   ) => Promise<string>,
-  { domain = defaultDomain, types = defaultTypes, message }: CreatePowoOptions
+  { domain = defaultDomain, types = defaultTypes, message, verifierAddress }: CreatePowoOptions
 ): Promise<string> => {
   const tokenDurationMs = 1000 * 5 * 60; // 5 minutes
   const expires = new Date(Date.now() + tokenDurationMs);
   const powoMessage: EthPowoMessage = {
     expires: expires.toISOString(),
-    message,
+    ...(message ? { message } : {}),
+    ...(verifierAddress ? { verifierAddress } : {}),
   };
   const signature = await signTypedData(domain, types, powoMessage);
   if (!signature) throw new Error('Error creating powo');
@@ -28,7 +29,7 @@ export const create = async (
 export const verify = async (
   address: string,
   proof: string,
-  { domain = defaultDomain, types = defaultTypes, message }: VerifyPowoOptions
+  { domain = defaultDomain, types = defaultTypes, message, verifierAddress }: VerifyPowoOptions
 ): Promise<boolean> => {
   console.log('verifyPowo raw', { address, proof });
   const [b64TypedMessage, signature] = proof.split('.');
@@ -47,6 +48,10 @@ export const verify = async (
 
   if (decodedMessage.message && message && decodedMessage.message !== message) {
     throw new Error('Bad message');
+  }
+
+  if (decodedMessage.verifierAddress && verifierAddress && decodedMessage.verifierAddress !== verifierAddress) {
+    throw new Error('Bad verifier address');
   }
   return true;
 };

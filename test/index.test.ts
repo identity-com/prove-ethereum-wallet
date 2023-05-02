@@ -50,4 +50,27 @@ describe('prove-solana-wallet', () => {
     });
     await expect(verify(wallet.address, proof, { message: 'test' })).rejects.toThrow('Bad message');
   });
+
+  it("throws an error if the verifierAddress doesn't match", async () => {
+    const proof = await create((...args) => wallet._signTypedData(...args), {
+      verifierAddress: 'bad',
+      types: {
+        PoWo: [
+          { name: 'expires', type: 'string' },
+          { name: 'verifierAddress', type: 'string' },
+        ],
+      },
+    });
+    await expect(
+      verify(wallet.address, proof, {
+        verifierAddress: 'test',
+        types: {
+          PoWo: [
+            { name: 'expires', type: 'string' },
+            { name: 'verifierAddress', type: 'string' },
+          ],
+        },
+      })
+    ).rejects.toThrow('Bad verifier address');
+  });
 });
