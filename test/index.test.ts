@@ -2,52 +2,52 @@ import { Wallet } from 'ethers';
 import { create, verify } from '../src';
 
 const expired = {
-  address: '0xcc222A1eb3d6772A414A24d426907dC4c144eF0F',
+  address: '0x802757E805F590f37a5A3f625EaC1061f475D873',
   proof:
-    'eyJleHBpcmVzIjoiMjAyMS0xMS0xOFQxMzoxNTo0Ni43ODhaIiwidmVyaWZpZXJBZGRyZXNzIjoidGVzdCJ9.MHhhNDA4ZDBlZGRhODY4OTY4ZmE5ODhmNzAzODhhZDg3M2M2MGI1M2I3NjJhZDYxZGJkYzhmMDQwMDc4MDQzZmIwMGFkNTI2Y2VkYTAyMDM5ODdlYjQyMjBiYWRlNGU3NDMxZjkxMjJhYzJhMGI0YzUzM2E1MDVmOTI1OThjYTBmZjFi',
+    'eyJleHBpcmVzIjoiMjAyMy0wNS0wMlQxMDozODozNy4xODNaIiwibWVzc2FnZSI6InRlc3QifQ==.MHg2YjQ2N2YxMDE4NTc2YjE3NDliNDk5ODNhMWUzMTgzMDE4YTc4ODIxMTgzYjcxZTYzNTU0ZDViNTdiNWUyY2IzMzE3N2IxYWU3YzgxYTg2Y2U2MTU1NTIyMzhiN2QxYjc3NjQzMjZiMjIwNzg0YmEyOTViOTYzZDM2MjI1ZDIxZTFj',
 };
 
 describe('prove-solana-wallet', () => {
   afterEach(() => jest.restoreAllMocks());
 
   let wallet: Wallet;
-  let verifierAddress: string;
+  let message: string;
   beforeEach(() => {
-    verifierAddress = 'test';
+    message = 'test';
     wallet = Wallet.createRandom();
   });
 
   it('creates a wallet ownership proof when a signer function is provided', async () => {
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress,
+      message,
     });
     expect(proof).toMatch(/.*\..*/); // the message is a base64 version of the signature concatenated with the message
   });
 
   it('verifies wallet ownership with provided signer function', async () => {
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress,
+      message,
     });
-    await expect(verify(wallet.address, proof, { verifierAddress })).resolves.not.toThrow();
+    await expect(verify(wallet.address, proof, { message })).resolves.not.toThrow();
   });
 
   it('throws an error if the transaction is signed with a different key', async () => {
     const someOtherKey = Wallet.createRandom();
 
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress,
+      message,
     });
-    await expect(verify(someOtherKey.address, proof, { verifierAddress })).rejects.toThrow();
+    await expect(verify(someOtherKey.address, proof, { message })).rejects.toThrow();
   });
 
   it('throws an error if the proof is expired', async () => {
-    await expect(verify(expired.address, expired.proof, { verifierAddress: 'test' })).rejects.toThrow('Token Expired');
+    await expect(verify(expired.address, expired.proof, { message: 'test' })).rejects.toThrow('Token Expired');
   });
 
-  it("throws an error if the verifierAddress doesn't match", async () => {
+  it("throws an error if the message doesn't match", async () => {
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress: 'bad',
+      message: 'bad',
     });
-    await expect(verify(wallet.address, proof, { verifierAddress: 'test' })).rejects.toThrow('Bad verifier address');
+    await expect(verify(wallet.address, proof, { message: 'test' })).rejects.toThrow('Bad message');
   });
 });

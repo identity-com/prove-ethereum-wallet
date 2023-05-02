@@ -10,6 +10,6 @@ import { Wallet } from 'ethers';
 
   const signFn = (_domain, _types, _message) => wallet._signTypedData(_domain, _types, _message);
 
-  const proof = await create(signFn, { verifierAddress: 'test' });
+  const proof = await create(signFn, { message: 'test' });
   console.log({ address: wallet.address, proof });
 })();
