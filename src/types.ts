@@ -4,7 +4,6 @@ export type Address = string;
 
 export type EthPowoMessage = {
   expires: string;
-  verifierAddress?: string;
   message: string;
 };
 
