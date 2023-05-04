@@ -10,7 +10,7 @@ export type EthPowoMessage = {
 
 export const defaultDomain: TypedDataDomain = {
   name: 'Proof Of Ethereum Wallet Ownership',
-  version: '1.1',
+  version: '1',
 };
 
 export const defaultTypes: Record<string, Array<TypedDataField>> = {

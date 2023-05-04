@@ -2,12 +2,12 @@ import { Wallet } from 'ethers';
 import { create, verify } from '../src';
 
 const expired = {
-  address: '0x802757E805F590f37a5A3f625EaC1061f475D873',
+  address: '0x33A17d5f19827EB220a3C05e33E5678A8b7b45Eb',
   proof:
-    'eyJleHBpcmVzIjoiMjAyMy0wNS0wMlQxMDozODozNy4xODNaIiwibWVzc2FnZSI6InRlc3QifQ==.MHg2YjQ2N2YxMDE4NTc2YjE3NDliNDk5ODNhMWUzMTgzMDE4YTc4ODIxMTgzYjcxZTYzNTU0ZDViNTdiNWUyY2IzMzE3N2IxYWU3YzgxYTg2Y2U2MTU1NTIyMzhiN2QxYjc3NjQzMjZiMjIwNzg0YmEyOTViOTYzZDM2MjI1ZDIxZTFj',
+    'eyJleHBpcmVzIjoiMjAyMy0wNS0wNFQxMzoyODoxNy45MThaIiwibWVzc2FnZSI6InRlc3QifQ==.MHhiMmEyZmQ5MWFiMDNkYzQwN2UwMjIxZDdhMjVlOGY5ZDIzNmI5Y2U1NGYxODA1MDVjYjE2NWYwMmMyMDQxMTBkNzhkNDRhMTQzMWY4NTI3YWY2OGZjZTg1MWRjZmI2ZDcwYzA5NjVmN2FlNGM2NWYyYjcwZDRkOWU4MjBlOWRiOTFj',
 };
 
-describe('prove-solana-wallet', () => {
+describe('prove-ethereum-wallet', () => {
   afterEach(() => jest.restoreAllMocks());
 
   let wallet: Wallet;
@@ -72,5 +72,28 @@ describe('prove-solana-wallet', () => {
         },
       })
     ).rejects.toThrow('Bad verifier address');
+  });
+
+  it('verifies wallet ownership when only verifier address is passed', async () => {
+    const proof = await create((...args) => wallet._signTypedData(...args), {
+      verifierAddress: 'good',
+      types: {
+        PoWo: [
+          { name: 'expires', type: 'string' },
+          { name: 'verifierAddress', type: 'string' },
+        ],
+      },
+    });
+    await expect(
+      verify(wallet.address, proof, {
+        verifierAddress: 'good',
+        types: {
+          PoWo: [
+            { name: 'expires', type: 'string' },
+            { name: 'verifierAddress', type: 'string' },
+          ],
+        },
+      })
+    ).resolves.not.toThrow();
   });
 });
