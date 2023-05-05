@@ -2,52 +2,98 @@ import { Wallet } from 'ethers';
 import { create, verify } from '../src';
 
 const expired = {
-  address: '0xcc222A1eb3d6772A414A24d426907dC4c144eF0F',
+  address: '0x33A17d5f19827EB220a3C05e33E5678A8b7b45Eb',
   proof:
-    'eyJleHBpcmVzIjoiMjAyMS0xMS0xOFQxMzoxNTo0Ni43ODhaIiwidmVyaWZpZXJBZGRyZXNzIjoidGVzdCJ9.MHhhNDA4ZDBlZGRhODY4OTY4ZmE5ODhmNzAzODhhZDg3M2M2MGI1M2I3NjJhZDYxZGJkYzhmMDQwMDc4MDQzZmIwMGFkNTI2Y2VkYTAyMDM5ODdlYjQyMjBiYWRlNGU3NDMxZjkxMjJhYzJhMGI0YzUzM2E1MDVmOTI1OThjYTBmZjFi',
+    'eyJleHBpcmVzIjoiMjAyMy0wNS0wNFQxMzoyODoxNy45MThaIiwibWVzc2FnZSI6InRlc3QifQ==.MHhiMmEyZmQ5MWFiMDNkYzQwN2UwMjIxZDdhMjVlOGY5ZDIzNmI5Y2U1NGYxODA1MDVjYjE2NWYwMmMyMDQxMTBkNzhkNDRhMTQzMWY4NTI3YWY2OGZjZTg1MWRjZmI2ZDcwYzA5NjVmN2FlNGM2NWYyYjcwZDRkOWU4MjBlOWRiOTFj',
 };
 
-describe('prove-solana-wallet', () => {
+describe('prove-ethereum-wallet', () => {
   afterEach(() => jest.restoreAllMocks());
 
   let wallet: Wallet;
-  let verifierAddress: string;
+  let message: string;
   beforeEach(() => {
-    verifierAddress = 'test';
+    message = 'test';
     wallet = Wallet.createRandom();
   });
 
   it('creates a wallet ownership proof when a signer function is provided', async () => {
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress,
+      message,
     });
     expect(proof).toMatch(/.*\..*/); // the message is a base64 version of the signature concatenated with the message
   });
 
   it('verifies wallet ownership with provided signer function', async () => {
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress,
+      message,
     });
-    await expect(verify(wallet.address, proof, { verifierAddress })).resolves.not.toThrow();
+    await expect(verify(wallet.address, proof, { message })).resolves.not.toThrow();
   });
 
   it('throws an error if the transaction is signed with a different key', async () => {
     const someOtherKey = Wallet.createRandom();
 
     const proof = await create((...args) => wallet._signTypedData(...args), {
-      verifierAddress,
+      message,
     });
-    await expect(verify(someOtherKey.address, proof, { verifierAddress })).rejects.toThrow();
+    await expect(verify(someOtherKey.address, proof, { message })).rejects.toThrow();
   });
 
   it('throws an error if the proof is expired', async () => {
-    await expect(verify(expired.address, expired.proof, { verifierAddress: 'test' })).rejects.toThrow('Token Expired');
+    await expect(verify(expired.address, expired.proof, { message: 'test' })).rejects.toThrow('Token Expired');
+  });
+
+  it("throws an error if the message doesn't match", async () => {
+    const proof = await create((...args) => wallet._signTypedData(...args), {
+      message: 'bad',
+    });
+    await expect(verify(wallet.address, proof, { message: 'test' })).rejects.toThrow('Bad message');
   });
 
   it("throws an error if the verifierAddress doesn't match", async () => {
     const proof = await create((...args) => wallet._signTypedData(...args), {
       verifierAddress: 'bad',
+      types: {
+        PoWo: [
+          { name: 'expires', type: 'string' },
+          { name: 'verifierAddress', type: 'string' },
+        ],
+      },
     });
-    await expect(verify(wallet.address, proof, { verifierAddress: 'test' })).rejects.toThrow('Bad verifier address');
+    await expect(
+      verify(wallet.address, proof, {
+        verifierAddress: 'test',
+        types: {
+          PoWo: [
+            { name: 'expires', type: 'string' },
+            { name: 'verifierAddress', type: 'string' },
+          ],
+        },
+      })
+    ).rejects.toThrow('Bad verifier address');
+  });
+
+  it('verifies wallet ownership when only verifier address is passed', async () => {
+    const proof = await create((...args) => wallet._signTypedData(...args), {
+      verifierAddress: 'good',
+      types: {
+        PoWo: [
+          { name: 'expires', type: 'string' },
+          { name: 'verifierAddress', type: 'string' },
+        ],
+      },
+    });
+    await expect(
+      verify(wallet.address, proof, {
+        verifierAddress: 'good',
+        types: {
+          PoWo: [
+            { name: 'expires', type: 'string' },
+            { name: 'verifierAddress', type: 'string' },
+          ],
+        },
+      })
+    ).resolves.not.toThrow();
   });
 });

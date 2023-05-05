@@ -23,24 +23,24 @@ Prover side:
 const { create } = require('@identity.com/prove-ethereum-wallet');
 const ownerWallet = Wallet.createRandom();
 
-const proof = await create((domain, types, message) => wallet._signTypedData(domain, types, message), { verifierAddress: '<verifierUrl>' });
+const proof = await create((domain, types, message) => wallet._signTypedData(domain, types, message), { message: '<verifierUrl>' });
 ```
 
 Verifier side:
 ```js
 const { verify } = require('@identity.com/prove-ethereum-wallet');
-const success = await verify(expectedOwnerAddress, proof, { verifierAddress: '<verifierUrl>' });
+const success = await verify(expectedOwnerAddress, proof, { message: '<verifierUrl>' });
 ```
 
 ## Details
 
-The prove() function generates some typed-data, including an expiry timestamp and verifierAddress and
+The prove() function generates some typed-data, including an expiry timestamp and message and
 signs it with the wallet private key. For the transaction to be verified
 by the verify() function, it must:
 
 - have an expiry that is before UTC now()
 - be signed by the expected wallet address
-- contain a matching verifierAddress
+- contain a matching message
 
 
 ## Configuration
@@ -66,14 +66,14 @@ Default:
 export const defaultTypes: Record<string, Array<TypedDataField>> = {
   PoWo: [
     { name: "expires", type: "string" },
-    { name: "verifierAddress", type: "string" },
+    { name: "message", type: "string" },
   ],
 };
 ```
 
-### `verifierAddress` 
+### `message` 
 
 Optional
 Default: empty
 
-The address of the verifier that should be used to check this proof. This could be a URL, a DID, or any string that the create wants.
+The message passed to check against the proof. This would normally be a nonce, or single use message to prevent the POWO from being re-used in a replay-attack.
