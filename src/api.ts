@@ -1,4 +1,5 @@
 import { TypedDataDomain, TypedDataField } from '@ethersproject/abstract-signer';
+import { Buffer } from 'buffer';
 import { verifyTypedData } from 'ethers/lib/utils';
 import { CreatePowoOptions, defaultDomain, EthPowoMessage, VerifyPowoOptions } from './types';
 
